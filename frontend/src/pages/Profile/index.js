@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 
-export default function Profile() {
+export default function NewIncidentProfile() {
   return (
     <div className='profile-container'>
       <header>
