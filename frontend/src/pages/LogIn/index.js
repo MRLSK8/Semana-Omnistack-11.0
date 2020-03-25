@@ -10,14 +10,14 @@ export default function LogIn() {
   return (
     <div className='logon-container'>
       <section className='form'>
-        <img src={logoImg} alt='be the hero' />
+        <img src={logoImg} alt='Be the hero logo' />
         <form>
           <h1>Faça seu long in</h1>
-          <input type='text' placeholder='Seu ID' />
+          <input placeholder='Seu ID' />
           <button className='button' type='submit'>
             Entrar
           </button>
-          <Link to='/register'>
+          <Link className='back-link' to='/register'>
             <FiLogIn size={16} color='#E02041' />
             Não tenho cadastro
           </Link>
