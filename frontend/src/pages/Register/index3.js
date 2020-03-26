@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useState } from 'react';
 import logoImg from '../../assets/logo.svg';
 import { FiArrowLeft } from 'react-icons/fi';
 
@@ -7,39 +7,27 @@ import api from '../../services/api';
 import './styles.css';
 import { Link, useHistory } from 'react-router-dom';
 
-function registerReducer(state, action) {
-  switch (action.type) {
-    case 'register_ong':
-      return { ...state, name: '', email: '', whatsapp: '', city: '', uf: '' };
-    case 'field':
-      return { ...state, [action.field]: action.payload };
-    default:
-      return state;
-  }
-}
-
-const INITIAL_STATE = {
-  name: '',
-  email: '',
-  whatsapp: '',
-  city: '',
-  uf: ''
-};
-
 export default function Register() {
-  const [state, dispatch] = useReducer(registerReducer, INITIAL_STATE);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [city, setCity] = useState('');
+  const [uf, setUf] = useState('');
 
   const history = useHistory();
 
   async function handleRegister(e) {
     e.preventDefault();
 
+    const data = { name, email, whatsapp, city, uf };
     try {
-      const response = await api.post('ongs', state);
+      const response = await api.post('ongs', data);
       alert(`Seu ID de acesso ${response.data.id}`);
-
-      dispatch({ type: 'register_ong' });
-
+      setName('');
+      setEmail('');
+      setWhatsapp('');
+      setCity('');
+      setUf('');
       history.push('/');
     } catch (error) {
       alert('Erro no cadastro, tente novamente!');
@@ -64,69 +52,39 @@ export default function Register() {
         <form onSubmit={handleRegister}>
           <input
             placeholder='Nome da ONG'
-            value={state.name}
-            onChange={event =>
-              dispatch({
-                type: 'field',
-                field: 'name',
-                payload: event.target.value
-              })
-            }
+            value={name}
+            onChange={e => setName(e.target.value)}
             required
           />
 
           <input
             type='email'
             placeholder='E-mail'
-            value={state.email}
-            onChange={event =>
-              dispatch({
-                type: 'field',
-                field: 'email',
-                payload: event.target.value
-              })
-            }
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             required
           />
 
           <input
             placeholder='Whatsapp'
-            value={state.whatsapp}
-            onChange={event =>
-              dispatch({
-                type: 'field',
-                field: 'whatsapp',
-                payload: event.target.value
-              })
-            }
+            value={whatsapp}
+            onChange={e => setWhatsapp(e.target.value)}
             required
           />
 
           <div className='input-group'>
             <input
               placeholder='Cidade'
-              value={state.city}
-              onChange={event =>
-                dispatch({
-                  type: 'field',
-                  field: 'city',
-                  payload: event.target.value
-                })
-              }
+              value={city}
+              onChange={e => setCity(e.target.value)}
               required
             />
 
             <input
               placeholder='UF'
               style={{ width: 80 }}
-              value={state.uf}
-              onChange={event =>
-                dispatch({
-                  type: 'field',
-                  field: 'uf',
-                  payload: event.target.value
-                })
-              }
+              value={uf}
+              onChange={e => setUf(e.target.value)}
               required
             />
           </div>

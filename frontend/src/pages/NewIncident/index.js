@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 
 import './styles.css';
 import api from '../../services/api';
@@ -7,25 +7,40 @@ import logoImg from '../../assets/logo.svg';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Link, useHistory } from 'react-router-dom';
 
+function NewIncidentReducer(state, action) {
+  switch (action.type) {
+    case 'newIncident':
+      return { ...state, title: '', description: '', value: '' };
+    case 'field':
+      return { ...state, [action.field]: action.payload };
+    default:
+      return state;
+  }
+}
+
+const INITIAL_STATE = {
+  title: '',
+  description: '',
+  value: ''
+};
+
 export default function NewIncident() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [value, setValue] = useState('');
+  const [state, dispatch] = useReducer(NewIncidentReducer, INITIAL_STATE);
+
   const ongId = localStorage.getItem('ongId');
   const history = useHistory();
 
   async function handleNewIncident(e) {
     e.preventDefault();
 
-    const data = { title, description, value };
-
     try {
-      await api.post('incidents', data, {
+      await api.post('incidents', state, {
         headers: {
           Authorization: ongId
         }
       });
 
+      dispatch({ type: 'newIncident' });
       history.push('/profile');
     } catch (error) {
       alert('Erro ao cadastrar caso, tente novamente.');
@@ -50,18 +65,36 @@ export default function NewIncident() {
         <form onSubmit={handleNewIncident}>
           <input
             placeholder='Titulo do caso'
-            value={title}
-            onChange={e => setTitle(e.target.value)}
+            value={state.title}
+            onChange={event =>
+              dispatch({
+                type: 'field',
+                field: 'title',
+                payload: event.target.value
+              })
+            }
           />
           <textarea
             placeholder='Descrição'
-            value={description}
-            onChange={e => setDescription(e.target.value)}
+            value={state.description}
+            onChange={event =>
+              dispatch({
+                type: 'field',
+                field: 'description',
+                payload: event.target.value
+              })
+            }
           />
           <input
             placeholder='Valor em reais'
-            value={value}
-            onChange={e => setValue(e.target.value)}
+            value={state.value}
+            onChange={event =>
+              dispatch({
+                type: 'field',
+                field: 'value',
+                payload: event.target.value
+              })
+            }
           />
 
           <button className='button' type='submit'>
