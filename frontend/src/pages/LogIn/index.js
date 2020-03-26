@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
 import './styles.css';
 
@@ -11,7 +11,7 @@ import logoImg from '../../assets/logo.svg';
 export default function LogIn() {
   const [id, setId] = useState('');
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   async function handleLogIn(e) {
     e.preventDefault();
@@ -21,7 +21,7 @@ export default function LogIn() {
       localStorage.setItem('ongId', id);
       localStorage.setItem('ongName', response.data.name);
 
-      history.push('/profile');
+      navigate('/profile');
     } catch (error) {
       alert('Falho no login, tente novamente');
     }

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './styles.css';
 
 import logoImg from '../../assets/logo.svg';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate, Outlet } from 'react-router-dom';
 
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 
@@ -15,7 +15,7 @@ export default function NewIncidentProfile() {
   const ongName = localStorage.getItem('ongName');
   const ongId = localStorage.getItem('ongId');
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     api
@@ -45,7 +45,7 @@ export default function NewIncidentProfile() {
 
   function handleLogOut() {
     localStorage.clear();
-    history.push('/');
+    navigate('/');
   }
 
   return (
@@ -88,6 +88,9 @@ export default function NewIncidentProfile() {
           </li>
         ))}
       </ul>
+
+      {/* In case profile has others nested links */}
+      <Outlet />
     </div>
   );
 }

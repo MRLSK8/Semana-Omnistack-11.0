@@ -5,7 +5,7 @@ import api from '../../services/api';
 
 import logoImg from '../../assets/logo.svg';
 import { FiArrowLeft } from 'react-icons/fi';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function NewIncidentReducer(state, action) {
   switch (action.type) {
@@ -28,7 +28,7 @@ export default function NewIncident() {
   const [state, dispatch] = useReducer(NewIncidentReducer, INITIAL_STATE);
 
   const ongId = localStorage.getItem('ongId');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   async function handleNewIncident(e) {
     e.preventDefault();
@@ -41,7 +41,7 @@ export default function NewIncident() {
       });
 
       dispatch({ type: 'newIncident' });
-      history.push('/profile');
+      navigate('/profile');
     } catch (error) {
       alert('Erro ao cadastrar caso, tente novamente.');
     }

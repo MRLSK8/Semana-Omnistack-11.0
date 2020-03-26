@@ -5,7 +5,7 @@ import { FiArrowLeft } from 'react-icons/fi';
 import api from '../../services/api';
 
 import './styles.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function registerReducer(state, action) {
   switch (action.type) {
@@ -29,7 +29,7 @@ const INITIAL_STATE = {
 export default function Register() {
   const [state, dispatch] = useReducer(registerReducer, INITIAL_STATE);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   async function handleRegister(e) {
     e.preventDefault();
@@ -40,7 +40,7 @@ export default function Register() {
 
       dispatch({ type: 'register_ong' });
 
-      history.push('/');
+      navigate('/');
     } catch (error) {
       alert('Erro no cadastro, tente novamente!');
     }
