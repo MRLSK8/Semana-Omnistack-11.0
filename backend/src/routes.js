@@ -19,9 +19,12 @@ routes.post(
       email: Joi.string()
         .required()
         .email(),
-      whatsapp: Joi.number().required(),
+      whatsapp: Joi.string()
+        .required()
+        .min(10)
+        .max(11),
       city: Joi.string().required(),
-      city: Joi.string()
+      uf: Joi.string()
         .required()
         .length(2)
     })
